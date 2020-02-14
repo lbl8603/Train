@@ -83,7 +83,7 @@ public class TrainTicketServiceImpl implements TrainTicketService{
         }
         try{
 
-            Credential cred = new Credential("AKIDoZAaml4HpENM9jTJhtuiIvMayDG4MUIu", "ZLr9BzsfEYgldGgwWv8A3jz3av1vdBWb");
+            Credential cred = new Credential("", "");
 
             HttpProfile httpProfile = new HttpProfile();
             httpProfile.setEndpoint("ocr.tencentcloudapi.com");
