@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/ack.css">
+    <title>确认登录</title>
+</head>
+<body>
+    <div class="center">
+        <div class="question"></div>
+        <div class="confirm" hidden>确定</div>
+        <div class="cancel" hidden>取消</div>
+    </div>
+    <script type="text/javascript" src="js/jquery-1.8.3.js?cove==11"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script>
+        var code = getQueryString('code');
+        var expire = getQueryString('expire');
+        var sign = getQueryString('sign');
+        var time = parseInt(new Date().getTime()/1000);
+
+        if(code&&sign&&expire){
+            if(time>expire){
+                $('.question').html('二维码已经失效')
+            }else{
+                $('.question').html('你确定要登录网页端吗？')
+                $('.confirm').show();
+                $('.cancel').show();
+                scanCode();
+            }
+
+        }else{
+            $('.question').html('参数错误')
+        }
+        function scanCode(){
+            $.ajax({
+                type: "GET",
+                url: urlRoot+"/open/scanCodeSuccess?code="+code+"&expire="+expire+"&sign="+sign,
+
+                dataType: "json",
+                success: function(data){
+
+                }
+            });
+        }
+        console.log(code);
+        console.log(time);
+        console.log(expire);
+        console.log(sign);//需要校验时效性
+        $('.confirm').click(function (e) {
+            $.ajax({
+                type: "GET",
+                url: urlRoot+"/user/ackLogin?code="+code+"&expire="+expire+"&sign="+sign,
+                headers:{
+                    "Authorization":"token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyZDU1NjI1MjlmNWQ0ZWQwODhiMmFmYzQwMmMxNGY4ZSIsImlhdCI6MTU4MTU5ODgxMiwiZXhwIjoxNTgxNjg1MjEyfQ.ONQWgm-lzmRZPa8iZzsFR5DIqkRt9Dk9Hlv3cDPPPXc"
+                },
+                dataType: "json",
+                success: function(data){
+                    if(data.code==200){
+                        window.location.replace("/html/confirm.html")
+                    }else{
+                        $('.question').html('系统错误');
+                    }
+                    $('.confirm').hide();
+                    $('.cancel').hide();
+                    $('.question').show();
+                    console.log(data)
+                }
+            });
+        })
+        $('.cancel').click(function (e) {
+            window.location.replace("/html/cancel.html")
+        })
+    </script>
+</body>
+</html>

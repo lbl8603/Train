@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/ack.css">
+    <script type="text/javascript" src="js/jquery-1.8.3.js?cove==11"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+    <title>登录</title>
+</head>
+<body>
+    <img class="qr-code" id="qr-code" hidden="true"/>
+    <h3 class="title">使用微信扫码登录</h3>
+    <p class="info"></p>
+
+    <script>
+        var isLoad = false;
+        start(function (e) {
+            if(e=='load_success'){
+                //连接成功
+                isLoad = true;
+                $('.qr-code').show();
+            }else if(e.accessToken=='scan success'){
+                $('.info').html('扫码成功，请在移动端确认登录');
+            }else if(e.accessToken&&e.refreshToken&&e.userCode){
+                window.location.replace("/html/index.html?userCode="+e.userCode+"&accessToken="+e.accessToken+"&refreshToken="+e.refreshToken)
+            }
+            console.log(e);
+        },function (e) {
+            if(isLoad){
+                $('.qr-code').css('opacity',0.3);
+                $('.info').html('二维码失效，请刷新页面');
+
+            }else{
+                $('.info').html('系统错误');
+            }
+
+        })
+
+    </script>
+</body>
+</html>
