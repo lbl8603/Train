@@ -50,8 +50,8 @@ public class UserServiceImpl implements UserService {
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid={appid}&secret={secret}&js_code={js_code}&grant_type=authorization_code";
         Map<String, Object> params = new HashMap<>();
         params.put("js_code", code);
-        params.put("appid","wx6ac171bab74f8eca");
-        params.put("secret","b828862c1820a15d82c364a404cddd77");
+        params.put("appid","");
+        params.put("secret","");
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String > responseEntity = restTemplate.getForEntity(url, String.class, params);
         String rs = responseEntity.getBody();
